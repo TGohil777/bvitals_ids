@@ -1,29 +1,44 @@
 const express = require('express');
-const app = express();
 const bodyParser = require('body-parser');
 const morgan = require('morgan');
-const http = require('http');
+const uuid = require('node-uuid')
+const chalk = require('chalk');
 const models = require('./models');
-const debug = require('debug');
 
+const fs = require('fs');
+require('dotenv').config({
+  path: '.variables.env'
+});
+
+morgan.token('id', function getId(req) {
+  return req.id;
+})
+
+const app = express();
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({
   extended: true
 }));
 
+app.use(assignId);
+
 if (process.env.NODE_ENV === 'development') {
-  app.use(morgan);
+  app.use(morgan('dev'));
 }
 
-const server = http.createServer(app);
+app.use(morgan(':id :method :url :response-time', {
+  stream: fs.createWriteStream('./access.log',{flags: 'a'})
+}));
+
+function assignId (req, res, next) {
+  req.id = uuid.v4()
+  console.log(req.id)
+  next()
+}
 
 models.sequelize.sync().then(() => {
-  server.listen(process.env.PORT, () => {
-    var addr = server.address()
-    var bind = typeof addr === 'string' ? 'pipe' + addr : 'port ' + addr.port
-    debug(chalk.green('Express server listening on port ' + server.address().port));
-  })
-})
-
-server.start();
+  app.listen(process.env.PORT, () => {
+    console.log(chalk.green(`Express server listening on port ${process.env.PORT}`));
+  });
+});

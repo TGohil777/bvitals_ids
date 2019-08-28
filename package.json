@@ -1,10 +1,9 @@
 {
   "name": "api",
   "version": "1.0.0",
-  "description": "",
   "main": "app.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "./node_modules/.bin/nodemon app"
   },
   "author": "",
   "license": "ISC",
@@ -16,14 +15,21 @@
     "express": "^4.17.1",
     "jsonwebtoken": "^8.5.1",
     "morgan": "^1.9.1",
+    "node-uuid": "^1.4.8",
     "pg": "^7.12.1",
     "pg-hstore": "^2.3.3",
-    "sequelize": "^5.16.0",
+    "sequelize": "^5.17.0",
     "validation": "0.0.1"
   },
   "devDependencies": {
     "dotenv": "^8.1.0",
     "nodemon": "^1.19.1",
     "sequelize-cli": "^5.5.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://kiranyadavXA@bitbucket.org/bvitals/bvitals-sample-identity-service.git"
+  },
+  "homepage": "https://bitbucket.org/bvitals/bvitals-sample-identity-service#readme",
+  "description": ""
 }
