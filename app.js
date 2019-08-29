@@ -10,6 +10,7 @@ require('dotenv').config({
   path: '.variables.env'
 });
 
+
 morgan.token('id', function getId(req) {
   return req.id;
 })
@@ -26,6 +27,7 @@ app.use(assignId);
 if (process.env.NODE_ENV === 'development') {
   app.use(morgan('dev'));
 }
+
 
 app.use(morgan(':id :method :url :response-time', {
   stream: fs.createWriteStream('./access.log',{flags: 'a'})

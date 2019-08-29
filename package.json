@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "main": "app.js",
   "scripts": {
-    "dev": "./node_modules/.bin/nodemon app"
+    "dev": "./node_modules/.bin/nodemon app",
+    "test": "node NODE_ENV app",
+    "prod": "node NODE_ENV app"
   },
   "author": "",
   "license": "ISC",
