@@ -33,7 +33,9 @@ module.exports = (sequelize, DataTypes) => {
         defaultValue: false
       }
 
-  }, { });
+  }, { 
+    freezeTableName: true
+  });
   auth.associate = function(models) {
 
 
