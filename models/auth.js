@@ -4,6 +4,8 @@ module.exports = (sequelize, DataTypes) => {
     authid: {
       type: DataTypes.BIGINT,
       primaryKey: true,
+      autoIncrement: true,
+      allowNull: false
     },
     firstname: {
       type: DataTypes.STRING(200),
@@ -34,11 +36,11 @@ module.exports = (sequelize, DataTypes) => {
       }
 
   }, { 
-    freezeTableName: true
+    freezeTableName: true,
+    timestamps: false
   });
   auth.associate = function(models) {
-
-
+    auth.belongsToMany(models.role, {through: 'authrole', foreignKey: 'authid', as: 'roles'})
   };
   return auth;
 };

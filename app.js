@@ -43,4 +43,40 @@ models.sequelize.sync().then(() => {
   app.listen(process.env.PORT, () => {
     console.log(chalk.green(`Express server listening on port ${process.env.PORT}`));
   });
-});
+})
+
+  // models.auth.create({
+  //   firstname: "twinkle",
+  //   lastname: "Yadav",
+  //   email: "twinkle@gmail.com",
+  //   password: "twink@123"
+  // }).then(user => {
+  //   console.log("User", JSON.stringify(user, null, 3))
+  // }).catch(err => {
+  //   console.log(err);
+  // });
+
+  
+  models.role.bulkCreate([
+    {
+      name: 'clinical admin'
+    },
+    {
+      name: 'provider'
+     }
+  ])
+  .then((roles) => {
+    models.auth.findAll({where: {authid: [10006]}, include: ['roles']})
+    .then((users) => {
+      // For user 1, 2 and 3 set the sames workingDays
+      users.forEach(user => {
+        user.setRoles(roles) // workingDays is an array (one user hasMany workingDays)
+        .then((joinedAuthRole) => {
+          console.log(JSON.stringify(joinedAuthRole, null, 3))
+        })
+        .catch((err) => console.log("Error while joining auth and role : ", err))
+      });
+    })
+    .catch((err) => console.log("Error while auth search : ", err))
+  })
+  .catch((err) => console.log("Error while role creation : ", err))

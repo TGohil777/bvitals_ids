@@ -14,10 +14,12 @@ module.exports = (sequelize, DataTypes) => {
     },
     
   }, {
-    freezeTableName : true
+    freezeTableName : true,
+    timestamps: false
   });
   role.associate = function(models) {
-    // associations can be defined here
+    role.belongsToMany(models.auth, {through: 'authrole', foreignKey: 'roleid', as: 'users'})
   };
+ 
   return role;
 };
