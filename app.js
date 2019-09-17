@@ -4,8 +4,8 @@ const morgan = require('morgan');
 const uuid = require('node-uuid')
 const chalk = require('chalk');
 const models = require('./models');
-const helmet = require('helmet')
 const fs = require('fs');
+const jwt = require('jsonwebtoken');
 require('dotenv').config({
   path: '.variables.env'
 });
@@ -22,7 +22,6 @@ var corsOptions = {
   origin: '*',
   preflightContinue: true 
 };
-
 
 app.use(cors(corsOptions));
 
@@ -43,7 +42,14 @@ function assignId (req, res, next) {
 
 app.use('/api/v1/identity-service', require('./routes/auth'));
 
-
+app.use(async (req, res, next) => {
+  const token = req.headers['authorization'];
+  if (token !== null) {
+    req.headers['authorization'] = token;
+  }
+  next();
+});
+ 
 app.use('/api/v1/identity-service', require('./routes/user'));
 
 models.sequelize.sync().then(() => {
